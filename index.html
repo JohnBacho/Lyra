@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Psych Research Stimulus</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: sans-serif;
+      }
+      .stimulus {
+        display: none;
+        width: 200px;
+        height: 200px;
+      }
+      .square {
+        background-color: red;
+      }
+      .circle {
+        border-radius: 50%;
+        background-color: blue;
+      }
+      #startBtn {
+        padding: 1em 2em;
+        font-size: 1.2em;
+      }
+      #formContainer {
+        display: none;
+        text-align: center;
+        margin-top: 2em;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+      input[type="range"] {
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="startBtn">Start Experiment</button>
+    <div id="circle" class="stimulus circle"></div>
+    <div id="square" class="stimulus square"></div>
+
+    <audio
+      id="screamSound"
+      src="Soundeffect/mixkit-arcade-retro-game-over-213.wav"
+    ></audio>
+
+    <div id="formContainer">
+      <p>How much do you anticipate an adverse sound?</p>
+      <input type="range" min="0" max="9" value="0" id="anticipationSlider" />
+      <p id="sliderValue">0</p>
+      <button id="submitBtn">Submit</button>
+    </div>
+
+    <script>
+      const startBtn = document.getElementById("startBtn");
+      const circle = document.getElementById("circle");
+      const square = document.getElementById("square");
+      const screamSound = document.getElementById("screamSound");
+      const formContainer = document.getElementById("formContainer");
+      const slider = document.getElementById("anticipationSlider");
+      const sliderValue = document.getElementById("sliderValue");
+      const submitBtn = document.getElementById("submitBtn");
+
+      slider.addEventListener("input", () => {
+        sliderValue.textContent = slider.value;
+      });
+
+      let sequence = [];
+      let currentIndex = 0;
+      let stepStartTime = 0;
+      let paused = false;
+      let pauseTime = 0;
+      let responses = [];
+      let animationFrame;
+      let soundPlayed = false;
+
+      startBtn.addEventListener("click", () => {
+        startBtn.style.display = "none";
+        responses = [];
+        currentIndex = 0;
+        runSequence();
+      });
+
+      submitBtn.addEventListener("click", () => {
+        responses.push({
+          step: currentIndex,
+          rating: slider.value,
+        });
+
+        formContainer.style.display = "none";
+        paused = false;
+
+        const step = sequence[currentIndex];
+
+        // plays sound 2 seconds after submission if there is a sound delay set
+        if (step.soundDelay !== undefined) {
+          setTimeout(() => {
+            screamSound.currentTime = 0;
+            screamSound.play();
+          }, 2000);
+        }
+
+        // waits 3 seconds before moving to next step
+        setTimeout(() => {
+          currentIndex++;
+          if (currentIndex >= sequence.length) {
+            endExperiment();
+            return;
+          }
+          stepStartTime = performance.now();
+          soundPlayed = false;
+          updateDisplay(sequence[currentIndex].element);
+          requestAnimationFrame(updateStep);
+        }, 3000);
+      });
+
+      function runSequence() {
+        sequence = [
+          //Habituation
+          { element: square, duration: 8000 },
+          { element: null, duration: 9000 },
+          { element: circle, duration: 8000, showForm: true },
+          { element: null, duration: 14000 },
+          { element: square, duration: 8000, soundDelay: 7000 },
+          { element: null, duration: 10000 },
+          { element: circle, duration: 8000, showForm: true, soundDelay: 7000 },
+          { element: null, duration: 12000 },
+          // fear acquisition
+          { element: circle, duration: 8000 },
+          { element: null, duration: 11000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 14000 },
+          { element: square, duration: 8000, soundDelay: 7000 },
+          { element: null, duration: 9000 },
+          { element: square, duration: 8000, soundDelay: 7000 },
+          { element: null, duration: 15000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: square, duration: 8000, soundDelay: 7000 },
+          { element: null, duration: 10000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 13000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 11000 },
+          { element: square, duration: 8000, soundDelay: 7000 },
+          { element: null, duration: 9000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: square, duration: 8000, soundDelay: 7000 },
+          { element: null, duration: 15000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 10000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 13000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 9000 },
+          { element: square, duration: 8000, soundDelay: 7000 },
+          { element: null, duration: 12000 },
+          // fear extinction
+          { element: circle, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 10000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 15000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 9000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 11000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 14000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 13000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 10000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 15000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 9000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 10000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 13000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 14000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 10000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 15000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 11000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 13000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 10000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 14000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 9000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 15000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 11000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 13000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 10000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 14000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 9000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 15000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 11000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 13000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 10000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 14000 },
+          { element: square, duration: 8000 },
+          { element: null, duration: 12000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 13000 },
+          { element: circle, duration: 8000 },
+          { element: null, duration: 9000 },
+          { element: square, duration: 8000 },
+        ];
+        stepStartTime = performance.now();
+        soundPlayed = false;
+        updateDisplay(sequence[currentIndex].element);
+        requestAnimationFrame(updateStep);
+      }
+
+      function updateDisplay(el) {
+        circle.style.display = "none";
+        square.style.display = "none";
+        if (el) el.style.display = "block";
+      }
+
+      function updateStep(timestamp) {
+        if (paused) return;
+
+        const step = sequence[currentIndex];
+        const elapsed = timestamp - stepStartTime;
+
+        if (
+          step.soundDelay !== undefined &&
+          !soundPlayed &&
+          elapsed >= step.soundDelay
+        ) {
+          screamSound.currentTime = 0;
+          screamSound.play();
+          soundPlayed = true;
+        }
+
+        if (step.showForm && elapsed >= 5000 && !paused) {
+          paused = true;
+          formContainer.style.display = "block";
+          slider.value = 0;
+          sliderValue.textContent = "0";
+          pauseTime = 5000;
+          return;
+        }
+
+        if (elapsed >= step.duration) {
+          currentIndex++;
+          if (currentIndex >= sequence.length) {
+            endExperiment();
+            return;
+          }
+          stepStartTime = performance.now();
+          soundPlayed = false;
+          updateDisplay(sequence[currentIndex].element);
+          requestAnimationFrame(updateStep);
+        } else {
+          animationFrame = requestAnimationFrame(updateStep);
+        }
+      }
+
+      function endExperiment() {
+        alert("Experiment complete! Thank you for your participation.");
+        console.log("Responses:", responses);
+        startBtn.style.display = "block";
+        updateDisplay(null);
+      }
+    </script>
+  </body>
+</html>
