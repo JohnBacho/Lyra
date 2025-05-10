@@ -26,6 +26,10 @@
         border-radius: 50%;
         background-color: blue;
       }
+      #text{
+        display: none;
+        margin: auto;
+      }
       #startBtn {
         padding: 1em 2em;
         font-size: 1.2em;
@@ -48,6 +52,7 @@
     <button id="startBtn">Start Experiment</button>
     <div id="circle" class="stimulus circle"></div>
     <div id="square" class="stimulus square"></div>
+    <div id="text"><p>Please Keep your eyes on the screen at all time.</p></div>
 
     <audio
       id="screamSound"
@@ -70,6 +75,7 @@
       const slider = document.getElementById("anticipationSlider");
       const sliderValue = document.getElementById("sliderValue");
       const submitBtn = document.getElementById("submitBtn");
+      const text = document.getElementById("text");
 
       slider.addEventListener("input", () => {
         sliderValue.textContent = slider.value;
@@ -88,7 +94,13 @@
         startBtn.style.display = "none";
         responses = [];
         currentIndex = 0;
-        runSequence();
+        text.style.display = "block";
+        setTimeout(() => {
+          text.style.display = "none";
+          runSequence();
+        }, 7000);
+        
+        
       });
 
       submitBtn.addEventListener("click", () => {
