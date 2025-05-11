@@ -41,10 +41,44 @@ body {
   }
   input[type="range"] {
     width: 300px;
+    touch-action: pan-y;
   }
 
   #submitBtn{
     width: 200px;
     height: 50px;
     font-size: 24px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 40px;
+    height: 40px;
+    background: #4285F4;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    margin-top: -10px;
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    width: 40px;
+    height: 40px;
+    background: #4285F4;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+  }
+
+  input[type="range"]::-moz-range-track {
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
   }
