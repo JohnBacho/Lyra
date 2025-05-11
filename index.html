@@ -26,7 +26,7 @@
         border-radius: 50%;
         background-color: blue;
       }
-      #text{
+      #text {
         display: none;
         margin: auto;
       }
@@ -52,7 +52,7 @@
     <button id="startBtn">Start Experiment</button>
     <div id="circle" class="stimulus circle"></div>
     <div id="square" class="stimulus square"></div>
-    <div id="text"><p>Please Keep your eyes on the screen at all time.</p></div>
+    <div id="text"><p>Please keep your eyes on the screen at all time.</p></div>
 
     <audio
       id="screamSound"
@@ -65,6 +65,14 @@
       <p id="sliderValue">0</p>
       <button id="submitBtn">Submit</button>
     </div>
+
+    <form
+      id="responseForm"
+      action="https://formspree.io/f/mpwdjdkk"
+      method="POST"
+    >
+      <input type="hidden" name="responses" id="responsesInput" />
+    </form>
 
     <script>
       const startBtn = document.getElementById("startBtn");
@@ -89,6 +97,7 @@
       let responses = [];
       let animationFrame;
       let soundPlayed = false;
+      let formShownTime = 0;
 
       startBtn.addEventListener("click", () => {
         startBtn.style.display = "none";
@@ -99,14 +108,13 @@
           text.style.display = "none";
           runSequence();
         }, 7000);
-        
-        
       });
 
       submitBtn.addEventListener("click", () => {
         responses.push({
           step: currentIndex,
           rating: slider.value,
+          responseTimeMs: performance.now() - formShownTime,
         });
 
         formContainer.style.display = "none";
@@ -146,120 +154,120 @@
           { element: square, duration: 8000, soundDelay: 7000 },
           { element: null, duration: 10000 },
           { element: circle, duration: 8000, showForm: true, soundDelay: 7000 },
-          { element: null, duration: 12000 },
+          // { element: null, duration: 12000 },
           // fear acquisition
-          { element: circle, duration: 8000 },
-          { element: null, duration: 11000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 14000 },
-          { element: square, duration: 8000, soundDelay: 7000 },
-          { element: null, duration: 9000 },
-          { element: square, duration: 8000, soundDelay: 7000 },
-          { element: null, duration: 15000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: square, duration: 8000, soundDelay: 7000 },
-          { element: null, duration: 10000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 13000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 11000 },
-          { element: square, duration: 8000, soundDelay: 7000 },
-          { element: null, duration: 9000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: square, duration: 8000, soundDelay: 7000 },
-          { element: null, duration: 15000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 10000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 13000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 9000 },
-          { element: square, duration: 8000, soundDelay: 7000 },
-          { element: null, duration: 12000 },
-          // fear extinction
-          { element: circle, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 10000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 15000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 9000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 11000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 14000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 13000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 10000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 15000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 9000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 10000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 13000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 14000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 10000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 15000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 11000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 13000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 10000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 14000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 9000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 15000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 11000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 13000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 10000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 14000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 9000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 15000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 11000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 13000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 10000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 14000 },
-          { element: square, duration: 8000 },
-          { element: null, duration: 12000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 13000 },
-          { element: circle, duration: 8000 },
-          { element: null, duration: 9000 },
-          { element: square, duration: 8000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 11000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 14000 },
+          // { element: square, duration: 8000, soundDelay: 7000 },
+          // { element: null, duration: 9000 },
+          // { element: square, duration: 8000, soundDelay: 7000 },
+          // { element: null, duration: 15000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: square, duration: 8000, soundDelay: 7000 },
+          // { element: null, duration: 10000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 13000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 11000 },
+          // { element: square, duration: 8000, soundDelay: 7000 },
+          // { element: null, duration: 9000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: square, duration: 8000, soundDelay: 7000 },
+          // { element: null, duration: 15000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 10000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 13000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 9000 },
+          // { element: square, duration: 8000, soundDelay: 7000 },
+          // { element: null, duration: 12000 },
+          // // fear extinction
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 10000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 15000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 9000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 11000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 14000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 13000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 10000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 15000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 9000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 10000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 13000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 14000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 10000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 15000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 11000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 13000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 10000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 14000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 9000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 15000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 11000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 13000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 10000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 14000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 9000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 15000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 11000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 13000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 10000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 14000 },
+          // { element: square, duration: 8000 },
+          // { element: null, duration: 12000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 13000 },
+          // { element: circle, duration: 8000 },
+          // { element: null, duration: 9000 },
+          // { element: square, duration: 8000 },
         ];
         stepStartTime = performance.now();
         soundPlayed = false;
@@ -295,6 +303,7 @@
           slider.value = 0;
           sliderValue.textContent = "0";
           pauseTime = 5000;
+          formShownTime = performance.now();
           return;
         }
 
@@ -314,8 +323,10 @@
       }
 
       function endExperiment() {
+        const responsesInput = document.getElementById("responsesInput");
+        responsesInput.value = JSON.stringify(responses);
+        document.getElementById("responseForm").submit();
         alert("Experiment complete! Thank you for your participation.");
-        console.log("Responses:", responses);
         startBtn.style.display = "block";
         updateDisplay(null);
       }
