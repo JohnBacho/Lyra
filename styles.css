@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: sans-serif;
+  }
+  .stimulus {
+    display: none;
+    width: 300px;
+    height: 300px;
+  }
+  .square {
+    background-color: red;
+  }
+  .circle {
+    border-radius: 50%;
+    background-color: blue;
+  }
+  #text {
+    display: none;
+    margin: auto;
+    font-size: 30px;
+  }
+  #startBtn {
+    padding: 1em 2em;
+    font-size: 1.2em;
+  }
+  #formContainer {
+    display: none;
+    text-align: center;
+    margin-top: 2em;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 24px;
+  }
+  input[type="range"] {
+    width: 300px;
+  }
+
+  #submitBtn{
+    width: 200px;
+    height: 50px;
+    font-size: 24px;
+  }
