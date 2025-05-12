@@ -29,7 +29,7 @@ body {
     padding: 1em 2em;
     font-size: 1.2em;
   }
-  #formContainer {
+  #formContainer, #formContainer2 {
     display: none;
     text-align: center;
     margin-top: 2em;
@@ -44,7 +44,20 @@ body {
     touch-action: pan-y;
   }
 
-  #submitBtn{
+   input[type='radio'] { 
+     transform: scale(2); 
+ }
+
+  #formContainer2 input {
+    margin-bottom: 30px;
+ }
+
+ #formContainer2 label{
+  margin-left: 10px;
+  font-size: 20px;
+ }
+
+  #submitBtn, #submitBtn2{
     width: 200px;
     height: 50px;
     font-size: 24px;
@@ -82,3 +95,13 @@ body {
     background: #ddd;
     border-radius: 5px;
   }
+
+  body.outdoor {
+  background-image: url('images/86F97806-EB28-45F7-847C-B58515D81F64-17744-00000C94CD4863F1.jpg');
+  background-size: cover;
+}
+
+body.indoor {
+  background-image: url('images/7A5DF9E9-1D13-4253-B2B3-C8A8EFB58EA1-17744-00000C9411B4F45A.jpg');
+  background-size: cover;
+}

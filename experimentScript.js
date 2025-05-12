@@ -7,6 +7,7 @@ const slider = document.getElementById("anticipationSlider");
 const sliderValue = document.getElementById("sliderValue");
 const submitBtn = document.getElementById("submitBtn");
 const text = document.getElementById("text");
+const submitBtn2 = document.getElementById("submitBtn2");
 
 slider.addEventListener("input", () => {
   sliderValue.textContent = slider.value;
@@ -24,13 +25,7 @@ let formShownTime = 0;
 
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
-  responses = [];
-  currentIndex = 0;
-  text.style.display = "block";
-  setTimeout(() => {
-    text.style.display = "none";
-    runSequence();
-  }, 7000);
+  formContainer2.style.display = "block";
 });
 
 submitBtn.addEventListener("click", () => {
@@ -67,12 +62,32 @@ submitBtn.addEventListener("click", () => {
   }, 3000);
 });
 
+submitBtn2.addEventListener("click", () => {
+  const selectedAge = document.querySelector('input[name="age-range"]:checked');
+  
+  if (selectedAge) {
+    responses.push({
+      Age: selectedAge.value,
+    });
+
+    formContainer2.style.display = "none";
+    text.style.display = "block";
+
+    setTimeout(() => {
+      text.style.display = "none";
+      runSequence();
+    }, 7000);
+  } else {
+    alert("Please select an age range before continuing.");
+  }
+});
+
 function runSequence() {
   sequence = [
     //Habituation
-    { element: square, duration: 8000, showForm: true, soundDelay: 7000 },
+    { element: square, duration: 8000, showForm: true, soundDelay: 7000, background: "outdoor"},
     { element: null, duration: 9000 },
-    { element: circle, duration: 8000, showForm: true },
+    { element: circle, duration: 8000, showForm: true, background: "indoor"},
     { element: null, duration: 14000 },
     { element: square, duration: 8000, soundDelay: 7000 },
     { element: null, duration: 10000 },
@@ -252,4 +267,17 @@ function endExperiment() {
   alert("Experiment complete! Thank you for your participation.");
   startBtn.style.display = "block";
   updateDisplay(null);
+}
+
+function updateDisplay(el) {
+  circle.style.display = "none";
+  square.style.display = "none";
+  document.body.classList.remove('outdoor', 'indoor');
+
+  const step = sequence[currentIndex];
+  if (step?.background) {
+    document.body.classList.add(step.background);
+  }
+
+  if (el) el.style.display = "block";
 }

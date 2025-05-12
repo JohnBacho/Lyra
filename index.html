@@ -3,10 +3,10 @@
   <link rel="stylesheet" href="styles.css" />
   <head>
     <meta charset="UTF-8" />
-    <title>Psych Research</title>
+    <title>Psych</title>
   </head>
   <body>
-    <button id="startBtn">Start Experiment</button>
+    <button id="startBtn">Start</button>
     <div id="circle" class="stimulus circle"></div>
     <div id="square" class="stimulus square"></div>
     <div id="text"><p>Please keep your eyes on the screen at all time.</p></div>
@@ -17,10 +17,31 @@
     ></audio>
 
     <div id="formContainer">
-      <p>How much do you anticipate an adverse sound? <br> 0 (certainly no adverse sound) to 9 (certainly a adverse sound)</p>
+      <p>
+        How much do you anticipate an adverse sound? <br />
+        0 (certainly no adverse sound) to 9 (certainly a adverse sound)
+      </p>
       <input type="range" min="0" max="9" value="0" id="anticipationSlider" />
       <p id="sliderValue">0</p>
       <button id="submitBtn">Submit</button>
+    </div>
+
+    <div id="formContainer2">
+      <p>Please select age-range</p>
+      <hr />
+      <input type="radio" value="18-24" id="18-24" name="age-range" />
+      <label for="18-24">18-24</label><br />
+      <input type="radio" value="25-34" id="25-34" name="age-range" />
+      <label for="25-34">25-34</label><br />
+      <input type="radio" value="35-44" id="35-44" name="age-range" />
+      <label for="35-44">35-44</label><br />
+      <input type="radio" value="45-54" id="45-54" name="age-range" />
+      <label for="45-54">45-54</label><br />
+      <input type="radio" value="55-64" id="55-64" name="age-range" />
+      <label for="55-64">55-64</label><br />
+      <input type="radio" value="65+" id="65+" name="age-range" />
+      <label for="65+">65+</label><br />
+      <button id="submitBtn2">Submit</button>
     </div>
 
     <form
