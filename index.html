@@ -13,9 +13,29 @@
       <p>Please keep your eyes on the screen at all times</p>
     </div>
 
+    <div id="instructionPhase">
+      <p>Please make sure your volume is turned up before continuing.</p>
+    </div>
+
+    <div id="TestSoundText">
+      <p>Click the button below to play a test sound.</p>
+      <button id="submitBtn3">Play Sound</button>
+    </div>
+
+    <div id="question" style="display: none">
+      <p>Did you hear the sound?</p>
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
+
     <audio
       id="screamSound"
       src="Soundeffect/mixkit-arcade-retro-game-over-213.wav"
+    ></audio>
+
+    <audio
+      id="TestSound"
+      src="Soundeffect/button-pressed-38129.mp3"
     ></audio>
 
     <div id="formContainer">

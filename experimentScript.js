@@ -8,6 +8,11 @@ const sliderValue = document.getElementById("sliderValue");
 const submitBtn = document.getElementById("submitBtn");
 const text = document.getElementById("text");
 const submitBtn2 = document.getElementById("submitBtn2");
+const instructionPhase = document.getElementById("instructionPhase");
+const TestSoundText = document.getElementById("TestSoundText");
+const question = document.getElementById("question");
+const submitBtn3 = document.getElementById("submitBtn3"); 
+const TestSound = document.getElementById("TestSound");
 
 slider.addEventListener("input", () => {
   sliderValue.textContent = slider.value;
@@ -29,11 +34,14 @@ startBtn.addEventListener("click", () => {
 });
 
 submitBtn.addEventListener("click", () => {
-  responses.push({
-    step: currentIndex,
-    rating: slider.value,
-    responseTimeMs: performance.now() - formShownTime,
-  });
+responses.push({
+  step: currentIndex,
+  rating: slider.value,
+  responseTimeMs: performance.now() - formShownTime,
+  stimulus: sequence[currentIndex]?.element?.id || "none",
+  background: sequence[currentIndex]?.background || "none",
+  soundPlayed: !!sequence[currentIndex]?.soundDelay,
+});
 
   formContainer.style.display = "none";
   paused = false;
@@ -68,19 +76,44 @@ submitBtn2.addEventListener("click", () => {
   if (selectedAge) {
     responses.push({
       Age: selectedAge.value,
+      userAgent: navigator.userAgent
     });
 
     formContainer2.style.display = "none";
-    text.style.display = "block";
+    instructionPhase.style.display = "block";
 
     setTimeout(() => {
-      text.style.display = "none";
-      runSequence();
-    }, 7000);
+      instructionPhase.style.display = "none";
+      TestSoundText.style.display = "block";
+    }, 5000);
   } else {
     alert("Please select an age range before continuing.");
   }
 });
+
+submitBtn3.addEventListener("click", () => {
+  TestSound.play();
+  setTimeout(() => {
+      TestSoundText.style.display = "none";
+    question.style.display = "block";
+  }, 1000);
+});
+
+document.getElementById("yes").addEventListener("click", () => {
+  question.style.display = "none";
+  text.style.display = "block"
+  setTimeout(() => {
+    text.style.display = "none";
+    runSequence();
+  }, 7000);
+});
+
+document.getElementById("no").addEventListener("click", () => {
+  question.style.display = "none";
+  TestSoundText.style.display = "block";
+});
+
+
 
 function runSequence() {
   sequence = [
