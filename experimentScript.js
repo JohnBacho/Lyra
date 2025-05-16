@@ -85,7 +85,7 @@ submitBtn2.addEventListener("click", () => {
     setTimeout(() => {
       instructionPhase.style.display = "none";
       TestSoundText.style.display = "block";
-    }, 5000);
+    }, 6000);
   } else {
     alert("Please select an age range before continuing.");
   }
