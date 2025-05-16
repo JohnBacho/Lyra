@@ -13,6 +13,8 @@ const TestSoundText = document.getElementById("TestSoundText");
 const question = document.getElementById("question");
 const submitBtn3 = document.getElementById("submitBtn3"); 
 const TestSound = document.getElementById("TestSound");
+const formContainer3 = document.getElementById("formContainer3");
+const submitBtn4 = document.getElementById("submitBtn4");
 
 slider.addEventListener("input", () => {
   sliderValue.textContent = slider.value;
@@ -75,11 +77,39 @@ submitBtn2.addEventListener("click", () => {
   
   if (selectedAge) {
     responses.push({
-      Age: selectedAge.value,
-      userAgent: navigator.userAgent
+      Device: navigator.userAgent,
+      Age: selectedAge.value
     });
 
     formContainer2.style.display = "none";
+    formContainer3.style.display = "block";
+
+  } else {
+    alert("Please select an age range before continuing.");
+  }
+});
+
+submitBtn4.addEventListener("click", () => {
+  const selectedGender = document.querySelector('input[name="gender"]:checked');
+
+  if (selectedGender) {
+    let genderValue = selectedGender.value;
+
+    if (genderValue === "self-describe") {
+      const customInput = document.getElementById("self-describe-input").value.trim();
+      if (customInput) {
+        genderValue = customInput;
+      } else {
+        alert("Please enter your self-described gender.");
+        return;
+      }
+    }
+
+    responses.push({
+      Gender: genderValue
+    });
+
+    formContainer3.style.display = "none";
     instructionPhase.style.display = "block";
 
     setTimeout(() => {
@@ -87,9 +117,10 @@ submitBtn2.addEventListener("click", () => {
       TestSoundText.style.display = "block";
     }, 6000);
   } else {
-    alert("Please select an age range before continuing.");
+    alert("Please select a gender before continuing.");
   }
 });
+
 
 submitBtn3.addEventListener("click", () => {
   TestSound.play();

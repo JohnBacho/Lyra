@@ -47,6 +47,21 @@ body {
   background-color: #f9f9f9;
   font-size: 24px;
 }
+
+#formContainer3 {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  margin-top: 2em;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 24px;
+}
+
 input[type="range"] {
   width: 300px;
   touch-action: pan-y;
@@ -56,11 +71,11 @@ input[type="radio"] {
   transform: scale(2);
 }
 
-#formContainer2 input {
+#formContainer2 input, #formContainer3 input {
   margin-bottom: 30px;
 }
 
-#formContainer2 label {
+#formContainer2 label, #formContainer3 label {
   margin-left: 10px;
   font-size: 20px;
 }
@@ -68,6 +83,7 @@ input[type="radio"] {
 #submitBtn,
 #submitBtn2,
 #submitBtn3,
+#submitBtn4,
 #yes,
 #no {
   width: 200px;
@@ -78,6 +94,11 @@ input[type="radio"] {
 #submitBtn3,
 #yes,
 #no {
+  display: block;
+  margin: 10px auto !important;
+}
+
+#submitBtn4 {
   display: block;
   margin: 10px auto !important;
 }
