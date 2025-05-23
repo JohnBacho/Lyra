@@ -71,11 +71,13 @@ input[type="radio"] {
   transform: scale(2);
 }
 
-#formContainer2 input, #formContainer3 input {
+#formContainer2 input,
+#formContainer3 input {
   margin-bottom: 30px;
 }
 
-#formContainer2 label, #formContainer3 label {
+#formContainer2 label,
+#formContainer3 label {
   margin-left: 10px;
   font-size: 20px;
 }
@@ -136,12 +138,12 @@ input[type="range"]::-moz-range-track {
   border-radius: 5px;
 }
 
-body.outdoor {
-  background-image: url("images/86F97806-EB28-45F7-847C-B58515D81F64-17744-00000C94CD4863F1.jpg");
+body.environment1 {
+  background-image: url("images/Pink.jpg");
   background-size: cover;
 }
 
-body.indoor {
-  background-image: url("images/7A5DF9E9-1D13-4253-B2B3-C8A8EFB58EA1-17744-00000C9411B4F45A.jpg");
+body.environment2 {
+  background-image: url("images/Yellow.jpg");
   background-size: cover;
 }

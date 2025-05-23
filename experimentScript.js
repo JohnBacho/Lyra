@@ -149,9 +149,9 @@ document.getElementById("no").addEventListener("click", () => {
 function runSequence() {
   sequence = [
     //Habituation
-    { element: square, duration: 8000, showForm: true, soundDelay: 7000, background: "outdoor"},
+    { element: square, duration: 8000, showForm: true, soundDelay: 7000, background: "environment1"},
     { element: null, duration: 9000 },
-    { element: circle, duration: 8000, showForm: true, background: "indoor"},
+    { element: circle, duration: 8000, showForm: true, background: "environment2"},
     { element: null, duration: 14000 },
     { element: square, duration: 8000, soundDelay: 7000 },
     { element: null, duration: 10000 },
@@ -336,7 +336,7 @@ function endExperiment() {
 function updateDisplay(el) {
   circle.style.display = "none";
   square.style.display = "none";
-  document.body.classList.remove('outdoor', 'indoor');
+  document.body.classList.remove('environment1', 'environment2');
 
   const step = sequence[currentIndex];
   if (step?.background) {
