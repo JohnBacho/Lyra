@@ -29,10 +29,12 @@ let responses = [];
 let animationFrame;
 let soundPlayed = false;
 let formShownTime = 0;
+let experimentStartTime;
 
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
   formContainer2.style.display = "block";
+  experimentStartTime = Date.now();
 });
 
 submitBtn.addEventListener("click", () => {
@@ -325,6 +327,9 @@ function updateStep(timestamp) {
 }
 
 function endExperiment() {
+  responses.push({
+  TotalTime: Date.now() - experimentStartTime,
+});
   const responsesInput = document.getElementById("responsesInput");
   responsesInput.value = JSON.stringify(responses);
   document.getElementById("responseForm").submit();
