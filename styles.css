@@ -147,3 +147,14 @@ body.environment2 {
   background-image: url("images/Yellow.jpg");
   background-size: cover;
 }
+
+.calibration-dot {
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border: black solid 3px;
+  opacity: 25%;
+  border-radius: 50%;
+  z-index: 1000;
+  cursor: pointer;
+}

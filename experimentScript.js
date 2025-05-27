@@ -16,12 +16,37 @@ const TestSound = document.getElementById("TestSound");
 const formContainer3 = document.getElementById("formContainer3");
 const submitBtn4 = document.getElementById("submitBtn4");
 
+let gazeData = [];
+
+async function startEyeTracking() {
+  await webgazer
+    .setRegression('weightedRidge')
+    .setGazeListener((data, elapsedTime) => {
+      if (data) {
+        gazeData.push({
+          x: data.x,
+          y: data.y,
+          time: elapsedTime,
+          step: currentIndex
+        });
+      }
+    })
+    .saveDataAcrossSessions(false)
+    .begin();
+
+  webgazer
+    .showVideoPreview(true)
+    .showPredictionPoints(true)
+    .applyKalmanFilter(true);
+}
+
+
 slider.addEventListener("input", () => {
   sliderValue.textContent = slider.value;
 });
 
 let sequence = [];
-let currentIndex = 0;
+let currentIndex = -1;
 let stepStartTime = 0;
 let paused = false;
 let pauseTime = 0;
@@ -31,10 +56,86 @@ let soundPlayed = false;
 let formShownTime = 0;
 let experimentStartTime;
 
+// Start BTN
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
-  formContainer2.style.display = "block";
   experimentStartTime = Date.now();
+  startEyeTracking();
+  startCalibration();
+});
+
+// Age
+submitBtn2.addEventListener("click", () => {
+  const selectedAge = document.querySelector('input[name="age-range"]:checked');
+  
+  if (selectedAge) {
+    responses.push({
+      Age: selectedAge.value
+    });
+
+    formContainer2.style.display = "none";
+    formContainer3.style.display = "block";
+
+  } else {
+    alert("Please select an age range before continuing.");
+  }
+});
+
+// Sound Test
+submitBtn3.addEventListener("click", () => {
+  TestSound.play();
+  setTimeout(() => {
+      TestSoundText.style.display = "none";
+    question.style.display = "block";
+  }, 1000);
+});
+
+document.getElementById("yes").addEventListener("click", () => {
+  question.style.display = "none";
+  text.style.display = "block"
+  setTimeout(() => {
+    text.style.display = "none";
+    currentIndex = 0;
+    runSequence();
+  }, 7000);
+});
+
+document.getElementById("no").addEventListener("click", () => {
+  question.style.display = "none";
+  TestSoundText.style.display = "block";
+});
+
+// Gender
+submitBtn4.addEventListener("click", () => {
+  const selectedGender = document.querySelector('input[name="gender"]:checked');
+
+  if (selectedGender) {
+    let genderValue = selectedGender.value;
+
+    if (genderValue === "self-describe") {
+      const customInput = document.getElementById("self-describe-input").value.trim();
+      if (customInput) {
+        genderValue = customInput;
+      } else {
+        alert("Please enter your self-described gender.");
+        return;
+      }
+    }
+
+    responses.push({
+      Gender: genderValue
+    });
+
+    formContainer3.style.display = "none";
+    instructionPhase.style.display = "block";
+
+    setTimeout(() => {
+      instructionPhase.style.display = "none";
+      TestSoundText.style.display = "block";
+    }, 6000);
+  } else {
+    alert("Please select a gender before continuing.");
+  }
 });
 
 submitBtn.addEventListener("click", () => {
@@ -72,78 +173,6 @@ responses.push({
     updateDisplay(sequence[currentIndex].element);
     requestAnimationFrame(updateStep);
   }, 3000);
-});
-
-submitBtn2.addEventListener("click", () => {
-  const selectedAge = document.querySelector('input[name="age-range"]:checked');
-  
-  if (selectedAge) {
-    responses.push({
-      Device: navigator.userAgent,
-      Age: selectedAge.value
-    });
-
-    formContainer2.style.display = "none";
-    formContainer3.style.display = "block";
-
-  } else {
-    alert("Please select an age range before continuing.");
-  }
-});
-
-submitBtn4.addEventListener("click", () => {
-  const selectedGender = document.querySelector('input[name="gender"]:checked');
-
-  if (selectedGender) {
-    let genderValue = selectedGender.value;
-
-    if (genderValue === "self-describe") {
-      const customInput = document.getElementById("self-describe-input").value.trim();
-      if (customInput) {
-        genderValue = customInput;
-      } else {
-        alert("Please enter your self-described gender.");
-        return;
-      }
-    }
-
-    responses.push({
-      Gender: genderValue
-    });
-
-    formContainer3.style.display = "none";
-    instructionPhase.style.display = "block";
-
-    setTimeout(() => {
-      instructionPhase.style.display = "none";
-      TestSoundText.style.display = "block";
-    }, 6000);
-  } else {
-    alert("Please select a gender before continuing.");
-  }
-});
-
-
-submitBtn3.addEventListener("click", () => {
-  TestSound.play();
-  setTimeout(() => {
-      TestSoundText.style.display = "none";
-    question.style.display = "block";
-  }, 1000);
-});
-
-document.getElementById("yes").addEventListener("click", () => {
-  question.style.display = "none";
-  text.style.display = "block"
-  setTimeout(() => {
-    text.style.display = "none";
-    runSequence();
-  }, 7000);
-});
-
-document.getElementById("no").addEventListener("click", () => {
-  question.style.display = "none";
-  TestSoundText.style.display = "block";
 });
 
 
@@ -328,15 +357,29 @@ function updateStep(timestamp) {
 
 function endExperiment() {
   responses.push({
-  TotalTime: Date.now() - experimentStartTime,
-});
+    TotalTime: Date.now() - experimentStartTime,
+  });
+    const finalPayload = {
+    timestamp: new Date().toISOString(),
+    responses: responses,
+    gaze: gazeData,
+    DeviceID: navigator.userAgent,
+    ScreenWidth: window.innerWidth,
+    ScreenHeight: window.innerHeight
+  };
+
   const responsesInput = document.getElementById("responsesInput");
-  responsesInput.value = JSON.stringify(responses);
+  responsesInput.value = JSON.stringify(finalPayload);
+
   document.getElementById("responseForm").submit();
-  alert("Experiment complete! Thank you for your participation.");
-  startBtn.style.display = "block";
-  updateDisplay(null);
+
+  setTimeout(() => {
+    alert("Experiment complete! Thank you for your participation.");
+    startBtn.style.display = "block";
+    updateDisplay(null);
+  }, 100);
 }
+
 
 function updateDisplay(el) {
   circle.style.display = "none";
@@ -349,4 +392,88 @@ function updateDisplay(el) {
   }
 
   if (el) el.style.display = "block";
+}
+const calibrationPoints = [
+  { x: "3%", y: "5%" },
+  { x: "50%", y: "5%" },
+  { x: "97%", y: "5%" },
+  { x: "3%", y: "50%" },
+  { x: "50%", y: "50%" },
+  { x: "97%", y: "50%" },
+  { x: "3%", y: "95%" },
+  { x: "50%", y: "95%" },
+  { x: "97%", y: "95%" },
+];
+
+let currentPoint = 0;
+let clickCount = 0;
+const maxClicksPerPoint = 5;
+
+function startCalibration() {
+  const container = document.getElementById("calibrationContainer");
+  alert("Please click on each of the points on the screen. You must click on each point 5 times till it goes yellow. This will calibrate the eye tracking.")
+  container.innerHTML = "";
+  currentPoint = 0;
+  clickCount = 0;
+  showNextCalibrationPoint();
+}
+
+function showNextCalibrationPoint() {
+  const container = document.getElementById("calibrationContainer");
+  container.innerHTML = "";
+
+  if (currentPoint >= calibrationPoints.length) {
+    console.log("Calibration complete!");
+    webgazer.showVideoPreview(false);
+    formContainer2.style.display = "block";
+    return;
+  }
+
+  clickCount = 0;
+
+  const point = calibrationPoints[currentPoint];
+  const dot = document.createElement("div");
+  dot.classList.add("calibration-dot");
+
+  dot.style.left = `calc(${point.x} - 10px)`;
+  dot.style.top = `calc(${point.y} - 10px)`;
+  dot.style.position = "absolute";
+
+  container.appendChild(dot);
+
+  dot.addEventListener("click", async () => {
+    const feedback = document.createElement("div");
+    feedback.classList.add("calibration-feedback");
+    feedback.style.position = "absolute";
+    feedback.style.top = "10px";
+    feedback.style.left = "10px";
+    feedback.style.color = "red";
+
+    const prediction = await webgazer.getCurrentPrediction();
+    if (prediction) {
+      const screenX = window.innerWidth * parseFloat(point.x) / 100;
+      const screenY = window.innerHeight * parseFloat(point.y) / 100;
+
+      webgazer.recordScreenPosition(screenX, screenY, "click");
+      clickCount++;
+
+      if (maxClicksPerPoint != clickCount) {
+        let intensity = ((clickCount + 1) * 0.20);
+        dot.style.opacity = intensity;
+      } else {
+        let green = Math.min(255, Math.floor((clickCount - 0.5) * 2 * 255));
+        dot.style.backgroundColor = `rgba(255, ${green}, 0, 1)`;
+      }
+
+      if (clickCount >= maxClicksPerPoint) {
+        container.removeChild(dot);
+        currentPoint++;
+        setTimeout(showNextCalibrationPoint, 400);
+      }
+    } else {
+      feedback.textContent = "No gaze detected — please try again.";
+      container.appendChild(feedback);
+      setTimeout(() => feedback.remove(), 1500);
+    }
+  });
 }

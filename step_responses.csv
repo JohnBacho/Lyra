@@ -1,0 +1,4 @@
+step,rating,responseTimeMs,stimulus,background,soundPlayed,timestamp,Age,Gender,TotalTime
+0,6,3810,square,environment1,True,2025-05-27T16:37:34.781Z,18-24,man,142056
+2,8,2418,circle,environment2,False,2025-05-27T16:37:34.781Z,18-24,man,142056
+6,7,4296,circle,none,True,2025-05-27T16:37:34.781Z,18-24,man,142056
