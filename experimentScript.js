@@ -17,17 +17,25 @@ const formContainer3 = document.getElementById("formContainer3");
 const submitBtn4 = document.getElementById("submitBtn4");
 
 let gazeData = [];
+let LookingAtStimulus;
 
 async function startEyeTracking() {
   await webgazer
     .setRegression('weightedRidge')
     .setGazeListener((data, elapsedTime) => {
       if (data) {
+        if (currentIndex !== -1 && sequence[currentIndex]?.element) {
+          LookingAtStimulus = isLookingAtStimulus(data, sequence[currentIndex].element);
+        } else {
+          LookingAtStimulus = false;
+        }
+
         gazeData.push({
           x: data.x,
           y: data.y,
           time: elapsedTime,
-          step: currentIndex
+          step: currentIndex,
+          LookingAtStimulus: LookingAtStimulus
         });
       }
     })
@@ -40,6 +48,15 @@ async function startEyeTracking() {
     .applyKalmanFilter(true);
 }
 
+function isLookingAtStimulus(data, element) {
+  const rect = element.getBoundingClientRect();
+  return (
+    data.x >= rect.left &&
+    data.x <= rect.right &&
+    data.y >= rect.top &&
+    data.y <= rect.bottom
+  );
+}
 
 slider.addEventListener("input", () => {
   sliderValue.textContent = slider.value;
@@ -355,6 +372,8 @@ function updateStep(timestamp) {
   }
 }
 
+
+
 function endExperiment() {
   responses.push({
     TotalTime: Date.now() - experimentStartTime,
@@ -411,7 +430,7 @@ const maxClicksPerPoint = 5;
 
 function startCalibration() {
   const container = document.getElementById("calibrationContainer");
-  alert("Please click on each of the points on the screen. You must click on each point 5 times till it goes yellow. This will calibrate the eye tracking.")
+  alert("Please click on each of the points on the screen. You must click on each point 5 times till it goes away. This will calibrate the eye tracking.")
   container.innerHTML = "";
   currentPoint = 0;
   clickCount = 0;
