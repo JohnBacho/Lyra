@@ -19,18 +19,19 @@ const submitBtn4 = document.getElementById("submitBtn4");
 let gazeData = [];
 let LookingAtStimulus;
 
-async function startEyeTracking() {
+async function startEyeTracking() { // Starts up the eyetracker as well as data collection 
   await webgazer
     .setRegression('weightedRidge')
     .setGazeListener((data, elapsedTime) => {
       if (data) {
         if (currentIndex !== -1 && sequence[currentIndex]?.element) {
-          LookingAtStimulus = isLookingAtStimulus(data, sequence[currentIndex].element);
+          // when the current index is -1 it is in the instruction phase so no CS is in view therefore it's set to false until it's updated to 0 
+          LookingAtStimulus = isLookingAtStimulus(data, sequence[currentIndex].element); // determines if the user is looking at the stimuli 
         } else {
           LookingAtStimulus = false;
         }
 
-        gazeData.push({
+        gazeData.push({ // Pushes eyetracking data to array 
           x: data.x,
           y: data.y,
           time: elapsedTime,
@@ -43,12 +44,12 @@ async function startEyeTracking() {
     .begin();
 
   webgazer
-    .showVideoPreview(true)
-    .showPredictionPoints(true)
-    .applyKalmanFilter(true);
+    .showVideoPreview(true) // shows video of the camera in the corner 
+    .showPredictionPoints(true) // red circle is shown where the user is looking 
+    .applyKalmanFilter(true); // smooths out jitter
 }
 
-function isLookingAtStimulus(data, element) {
+function isLookingAtStimulus(data, element) { // checks if user is looking at the stimulus and returns a bool
   const rect = element.getBoundingClientRect();
   return (
     data.x >= rect.left &&
@@ -60,7 +61,7 @@ function isLookingAtStimulus(data, element) {
 
 slider.addEventListener("input", () => {
   sliderValue.textContent = slider.value;
-});
+}); // used for the anticipation form
 
 let sequence = [];
 let currentIndex = -1;
@@ -76,12 +77,12 @@ let experimentStartTime;
 // Start BTN
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
-  experimentStartTime = Date.now();
+  experimentStartTime = Date.now(); // used to calculate how long the experiment is 
   startEyeTracking();
   startCalibration();
 });
 
-// Age
+// Age BTN
 submitBtn2.addEventListener("click", () => {
   const selectedAge = document.querySelector('input[name="age-range"]:checked');
   
@@ -107,6 +108,7 @@ submitBtn3.addEventListener("click", () => {
   }, 1000);
 });
 
+// displays the text "please look at the screen" if yes for sound test
 document.getElementById("yes").addEventListener("click", () => {
   question.style.display = "none";
   text.style.display = "block"
@@ -117,6 +119,7 @@ document.getElementById("yes").addEventListener("click", () => {
   }, 7000);
 });
 
+// if user selects no for did hear sound then it replays the sound test
 document.getElementById("no").addEventListener("click", () => {
   question.style.display = "none";
   TestSoundText.style.display = "block";
@@ -155,6 +158,7 @@ submitBtn4.addEventListener("click", () => {
   }
 });
 
+// Submit button for anticipate form
 submitBtn.addEventListener("click", () => {
 responses.push({
   step: currentIndex,
@@ -193,7 +197,7 @@ responses.push({
 });
 
 
-
+// runs all the fear trials 
 function runSequence() {
   sequence = [
     //Habituation
@@ -325,12 +329,6 @@ function runSequence() {
   requestAnimationFrame(updateStep);
 }
 
-function updateDisplay(el) {
-  circle.style.display = "none";
-  square.style.display = "none";
-  if (el) el.style.display = "block";
-}
-
 function updateStep(timestamp) {
   if (paused) return;
 
@@ -412,8 +410,10 @@ function updateDisplay(el) {
 
   if (el) el.style.display = "block";
 }
+
+//eye tracking
 const calibrationPoints = [
-  { x: "3%", y: "5%" },
+  { x: "25%", y: "5%" },
   { x: "50%", y: "5%" },
   { x: "97%", y: "5%" },
   { x: "3%", y: "50%" },
