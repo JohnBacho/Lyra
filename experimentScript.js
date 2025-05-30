@@ -15,6 +15,8 @@ const submitBtn3 = document.getElementById("submitBtn3");
 const TestSound = document.getElementById("TestSound");
 const formContainer3 = document.getElementById("formContainer3");
 const submitBtn4 = document.getElementById("submitBtn4");
+const EyeTrackingForm = document.getElementById("EyeTrackingForm");
+
 
 let gazeData = [];
 let LookingAtStimulus;
@@ -78,8 +80,20 @@ let experimentStartTime;
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
   experimentStartTime = Date.now(); // used to calculate how long the experiment is 
+  EyeTrackingForm.style.display = "block";
+});
+
+// if user selects Yes start calibration
+document.getElementById("YesEyeTracking").addEventListener("click", () => {
+  EyeTrackingForm.style.display = "none";
   startEyeTracking();
   startCalibration();
+});
+
+// if user selects no skips eye tracking 
+document.getElementById("NoEyeTracking").addEventListener("click", () => {
+  EyeTrackingForm.style.display = "none";
+  formContainer2.style.display = "block";
 });
 
 // Age BTN

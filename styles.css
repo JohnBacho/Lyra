@@ -24,7 +24,8 @@ body {
 #text,
 #TestSoundText,
 #instructionPhase,
-#question {
+#question,
+#EyeTrackingForm {
   display: none;
   margin: auto;
   font-size: 30px;
@@ -87,7 +88,9 @@ input[type="radio"] {
 #submitBtn3,
 #submitBtn4,
 #yes,
-#no {
+#no,
+#YesEyeTracking,
+#NoEyeTracking {
   width: 200px;
   height: 50px;
   font-size: 24px;
