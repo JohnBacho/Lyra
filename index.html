@@ -21,11 +21,69 @@
   </head>
   <body>
     <div id="calibrationContainer"></div>
-    <button id="startBtn">Start</button>
     <div id="circle" class="stimulus circle"></div>
     <div id="square" class="stimulus square"></div>
     <div id="text">
       <p>Please keep your eyes on the screen at all times</p>
+    </div>
+
+    <div
+      id="StartScreen" class="glass-pane"
+      style="
+        margin: auto;
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 20px;
+        max-width: 800px;
+        line-height: 1.3;
+      "
+    >
+    
+      <p>
+        This website is part of an IRB-approved academic research study
+        examining how users interact with web-based experiences. As part of the
+        study, you may be asked whether you’d like to enable
+        <strong>eye tracking</strong> using your device’s camera.
+      </p>
+
+      <h3 style="margin-top: 1em">Important Information</h3>
+      <ul
+        style="
+          text-align: left;
+          display: inline-block;
+          font-size: 1rem;
+          line-height: 1.6;
+          margin-top: 0.5em;
+        "
+      >
+        <li>
+          Participation is entirely voluntary. You may decline or withdraw at
+          any time without penalty.
+        </li>
+        <li>Eye tracking will only be activated with your explicit consent.</li>
+        <li>
+          No identifiable personal data is collected or shared. If you consent,
+          all data is used strictly for research purposes and stored securely.
+        </li>
+        <li>
+          This study has been reviewed and approved by the Institutional Review
+          Board (IRB). Protocol #: (Protocol Number).
+        </li>
+      </ul>
+
+      <p style="margin-top: 1em">
+        By enabling eye tracking, you are providing informed consent for us to
+        collect eye tracking data as part of this study. If you choose not to
+        enable it, you can still participate in the study—no eye tracking data
+        will be collected.
+      </p>
+
+      <p>
+        For general questions about the study, please contact
+        <a href="mailto:jbacho22@bw.edu">John Bacho</a>.
+      </p>
+
+      <button id="startBtn">Acknowledged</button>
     </div>
 
     <div id="instructionPhase">
@@ -39,6 +97,16 @@
       <p>Click the button below to play a test sound.</p>
       <button id="submitBtn3">Play Sound</button>
     </div>
+
+    <div id="EyeTrackingText">
+      <p>
+        Please click on each of the points on the screen. You must click on each
+        point 5 times till it goes away. This will calibrate the eye tracking.
+      </p>
+      <button id="EyeTrackingSubmitBtn">Proceed</button>
+    </div>
+
+    <div id="discamer"></div>
 
     <div id="question" style="display: none">
       <p>Did you hear the sound?</p>

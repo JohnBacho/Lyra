@@ -1,4 +1,5 @@
 const startBtn = document.getElementById("startBtn");
+const StartScreen = document.getElementById("StartScreen");
 const circle = document.getElementById("circle");
 const square = document.getElementById("square");
 const screamSound = document.getElementById("screamSound");
@@ -16,6 +17,7 @@ const TestSound = document.getElementById("TestSound");
 const formContainer3 = document.getElementById("formContainer3");
 const submitBtn4 = document.getElementById("submitBtn4");
 const EyeTrackingForm = document.getElementById("EyeTrackingForm");
+const EyeTrackingText = document.getElementById("EyeTrackingText");
 
 
 let gazeData = [];
@@ -78,7 +80,7 @@ let experimentStartTime;
 
 // Start BTN
 startBtn.addEventListener("click", () => {
-  startBtn.style.display = "none";
+  StartScreen.style.display = "none"
   experimentStartTime = Date.now(); // used to calculate how long the experiment is 
   if(mobileAndTabletCheck()){
     formContainer2.style.display = "block";
@@ -91,14 +93,19 @@ startBtn.addEventListener("click", () => {
 // if user selects Yes start calibration
 document.getElementById("YesEyeTracking").addEventListener("click", () => {
   EyeTrackingForm.style.display = "none";
-  startEyeTracking();
-  startCalibration();
+  EyeTrackingText.style.display = "block";
 });
 
 // if user selects no skips eye tracking 
 document.getElementById("NoEyeTracking").addEventListener("click", () => {
   EyeTrackingForm.style.display = "none";
   formContainer2.style.display = "block";
+});
+
+document.getElementById("EyeTrackingSubmitBtn").addEventListener("click", () => {
+  EyeTrackingText.style.display = "none";
+  startEyeTracking();
+  startCalibration();
 });
 
 // Age BTN
@@ -222,7 +229,7 @@ function runSequence() {
     //Habituation
     { element: square, duration: 8000, showForm: true, soundDelay: 7000, background: "environment1"},
     { element: null, duration: 9000 },
-    { element: circle, duration: 8000, showForm: true, background: "environment2"},
+    { element: circle, duration: 8000, showForm: true},
     { element: null, duration: 14000 },
     { element: square, duration: 8000, soundDelay: 7000 },
     { element: null, duration: 10000 },
@@ -349,7 +356,7 @@ function runSequence() {
 }
 
 function updateStep(timestamp) {
-  if (paused) return;
+  if (paused || document.hidden) return;
 
   const step = sequence[currentIndex];
   const elapsed = timestamp - stepStartTime;
@@ -430,6 +437,14 @@ function updateDisplay(el) {
   if (el) el.style.display = "block";
 }
 
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && !paused) {
+    stepStartTime = performance.now();
+    requestAnimationFrame(updateStep); 
+  }
+});
+
+
 //eye tracking
 const calibrationPoints = [
   { x: "25%", y: "5%" },
@@ -449,7 +464,6 @@ const maxClicksPerPoint = 5;
 
 function startCalibration() {
   const container = document.getElementById("calibrationContainer");
-  alert("Please click on each of the points on the screen. You must click on each point 5 times till it goes away. This will calibrate the eye tracking.")
   container.innerHTML = "";
   currentPoint = 0;
   clickCount = 0;

@@ -21,46 +21,104 @@ body {
   border-radius: 50%;
   background-color: blue;
 }
+
 #text,
 #TestSoundText,
 #instructionPhase,
 #question,
-#EyeTrackingForm {
+#EyeTrackingForm,
+#EyeTrackingText {
   display: none;
+  margin: auto;
+  font-size: 1.5rem;
+  text-align: center;
+  line-height: 1.6;
+  max-width: 700px;
+  color: #222;
+
+  background-color: #f9f9f9;
+  background: rgba(255, 255, 255, 0.2); 
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+#StartScreen {
   margin: auto;
   font-size: 30px;
   text-align: center;
-  padding: 0px 20px 0 20px;
+  background-color: #f9f9f9;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
 }
-#startBtn {
-  font-size: 2.2em;
-  width: 300px;
-  height: 150px;
-}
-#formContainer,
+
 #formContainer2 {
   display: none;
   text-align: center;
-  margin-top: 2em;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  margin-top: 2rem;
   background-color: #f9f9f9;
-  font-size: 24px;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #222;
+
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+#formContainer {
+  display: none;
+  text-align: center;
+  margin-top: 2rem;
+  background-color: #f9f9f9;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #222;
+  padding: 12px;
+  border-radius: 12px;
 }
 
 #formContainer3 {
   display: none;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 0.75rem;
   text-align: left;
-  margin-top: 2em;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  margin-top: 2rem;
+  padding: 1.5rem;
   background-color: #f9f9f9;
-  font-size: 24px;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #222;
+
+  background: rgba(255, 255, 255, 0.2); 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.3); 
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+  padding: 1.5rem;
 }
 
 input[type="range"] {
@@ -90,22 +148,52 @@ input[type="radio"] {
 #yes,
 #no,
 #YesEyeTracking,
-#NoEyeTracking {
-  width: 200px;
-  height: 50px;
-  font-size: 24px;
+#NoEyeTracking,
+#EyeTrackingSubmitBtn,
+#startBtn {
+  width: 100%;
+  max-width: 220px;
+  height: 3rem;
+  font-size: 1.125rem; /* ~18px */
+  font-weight: 600;
+  background-color: #d35400;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem auto;
+  display: block;
+  text-align: center;
 }
 
-#submitBtn3,
-#yes,
-#no {
-  display: block;
-  margin: 10px auto !important;
+#submitBtn:hover,
+#submitBtn2:hover,
+#submitBtn3:hover,
+#submitBtn4:hover,
+#yes:hover,
+#no:hover,
+#YesEyeTracking:hover,
+#NoEyeTracking:hover,
+#EyeTrackingSubmitBtn:hover,
+#startBtn:hover {
+  background-color: #b24300;
+  transform: scale(1.02);
 }
 
-#submitBtn4 {
-  display: block;
-  margin: 10px auto !important;
+#submitBtn:focus,
+#submitBtn2:focus,
+#submitBtn3:focus,
+#submitBtn4:focus,
+#yes:focus,
+#no:focus,
+#YesEyeTracking:focus,
+#NoEyeTracking:focus,
+#EyeTrackingSubmitBtn:focus,
+#startBtn:focus {
+  outline: 3px solid #88c0ff;
+  outline-offset: 2px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -132,21 +220,16 @@ input[type="range"]::-moz-range-thumb {
 input[type="range"]::-webkit-slider-runnable-track {
   height: 10px;
   background: #ddd;
-  border-radius: 5px;
+  border-radius: 12px;
 }
 
 input[type="range"]::-moz-range-track {
   height: 10px;
   background: #ddd;
-  border-radius: 5px;
+  border-radius: 12px;
 }
 
 body.environment1 {
-  background-image: url("images/Pink.jpg");
-  background-size: cover;
-}
-
-body.environment2 {
   background-image: url("images/Yellow.jpg");
   background-size: cover;
 }
